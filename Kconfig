@@ -1,0 +1,8 @@
+# 顶层 Kconfig
+menu "Project Configuration"
+
+source "MiddleWare/HAL_Driver/Kconfig"
+
+source "Driver/esp32s3/esp32-camera/Kconfig"
+
+endmenu
