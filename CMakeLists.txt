@@ -15,6 +15,7 @@ list(APPEND EXTRA_COMPONENT_DIRS
     ${CMAKE_SOURCE_DIR}/MiddleWare/Network
     ${CMAKE_SOURCE_DIR}/MiddleWare/Utils
     ${CMAKE_SOURCE_DIR}/Driver/esp32s3/esp32-camera
+    ${CMAKE_SOURCE_DIR}/Driver/esp32s3/esp32_lcd
 )
 
 project(sparkbot_motion_control)

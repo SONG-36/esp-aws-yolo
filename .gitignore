@@ -1,1 +1,25 @@
+# 忽略 build 目录
+/build/
 /managed_components/
+/CMakeFiles/
+/cmake-build-*/
+/*.log
+
+# 忽略 sdk 配置文件（如果你不打算追踪）
+sdkconfig
+sdkconfig.old
+sdkconfig.defaults
+
+# 忽略编译中间产物
+*.elf
+*.bin
+*.map
+*.out
+*.o
+*.d
+*.a
+*.pyc
+__pycache__/
+
+# 忽略 VSCODE 设置（可选）
+.vscode/
