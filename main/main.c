@@ -27,4 +27,22 @@ void app_main(void) {
 
     lcd_init();
 
+    // 准备颜色数组（RGB565）
+
+    const uint16_t test_colors[] = {
+        0xF800, // Red
+        0x07E0, // Green
+        0x001F, // Blue
+        0xFFFF, // White
+        0x0000, // Black
+    };
+
+    while (1) {
+        for (int i = 0; i < sizeof(test_colors)/sizeof(test_colors[0]); i++) {
+            ESP_LOGI("MAIN", "Color: 0x%04X", test_colors[i]);
+            lcd_clear(test_colors[i]);
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+    }
+
 }

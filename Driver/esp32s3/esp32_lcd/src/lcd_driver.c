@@ -52,7 +52,7 @@ void lcd_create_panel(void)
 // Step 2: 初始化 LCD 面板 + 背光 + 画测试图
 void lcd_start_panel(void)
 {
-    ESP_LOGI(TAG, "Initializing LCD panel...");
+    ESP_LOGI(TAG, "Reset/init panel...");
     ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, true));
@@ -64,6 +64,7 @@ void lcd_start_panel(void)
     ESP_ERROR_CHECK(esp_lcd_panel_disp_off(panel_handle, false));
 #endif
 
+    // Backlight
     gpio_config_t io_conf = {
         .mode = GPIO_MODE_OUTPUT,
         .pin_bit_mask = 1ULL << LCD_PIN_BL,
@@ -73,36 +74,7 @@ void lcd_start_panel(void)
     };
     gpio_config(&io_conf);
     gpio_set_level(LCD_PIN_BL, 1);
-
-    // 自动颜色循环测试
-    ESP_LOGI(TAG, "Starting color cycle test...");
-    const uint16_t test_colors[] = {
-        0xF800,  // Red
-        0x07E0,  // Green
-        0x001F,  // Blue
-        0xFFFF,  // White
-        0x0000   // Black
-    };
-
-    size_t buffer_size = LCD_H_RES * LCD_V_RES * sizeof(uint16_t);
-    uint16_t *color_buf = heap_caps_malloc(buffer_size, MALLOC_CAP_DMA);
-    if (!color_buf) {
-        ESP_LOGE(TAG, "Failed to allocate color buffer!");
-        return;
-    }
-
-    for (int c = 0; c < sizeof(test_colors)/sizeof(test_colors[0]); ++c) {
-        uint16_t color = test_colors[c];
-        for (int i = 0; i < LCD_H_RES * LCD_V_RES; i++) {
-            color_buf[i] = color;
-        }
-        ESP_LOGI(TAG, "Displaying color 0x%04X...", color);
-        esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, LCD_H_RES, LCD_V_RES, color_buf);
-        vTaskDelay(pdMS_TO_TICKS(1000));  // 每种颜色显示 1 秒
-    }
-
-    free(color_buf);
-    ESP_LOGI(TAG, "Color cycle test completed.");
+    ESP_LOGI(TAG, "Backlight enabled");
 }
 
 void lcd_init(void)
@@ -113,10 +85,21 @@ void lcd_init(void)
 
 void lcd_clear(uint16_t color)
 {
-    ESP_LOGI(TAG, "Clearing LCD with color 0x%04X...", color);
-    esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, LCD_H_RES, LCD_V_RES, (const void *)(&color));
-    ESP_LOGI(TAG, "LCD cleared.");
+    size_t buffer_size = LCD_H_RES * LCD_V_RES * sizeof(uint16_t);
+    uint16_t *buf = heap_caps_malloc(buffer_size, MALLOC_CAP_DMA);
+    if (!buf) {
+        ESP_LOGE(TAG, "Failed to alloc clear buffer");
+        return;
+    }
+
+    for (int i = 0; i < LCD_H_RES * LCD_V_RES; i++) {
+        buf[i] = color;
+    }
+
+    esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, LCD_H_RES, LCD_V_RES, buf);
+    free(buf);
 }
+
 
 void lcd_draw_bitmap(int x, int y, int w, int h, const uint16_t *pixels)
 {
