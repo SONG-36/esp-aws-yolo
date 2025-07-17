@@ -23,3 +23,6 @@
 #define LCD_PIXEL_CLOCK_HZ     (80 * 1000 * 1000)
 #define LCD_COLOR_SPACE        ESP_LCD_COLOR_SPACE_RGB
 #define LCD_BITS_PER_PIXEL     16
+#define LCD_COLOR_FORMAT        (ESP_LCD_COLOR_FORMAT_RGB565)
+#define LCD_CMD_BITS         (8)
+#define LCD_PARAM_BITS       (8)

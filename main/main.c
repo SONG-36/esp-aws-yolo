@@ -27,20 +27,4 @@ void app_main(void) {
 
     lcd_init();
 
-    // 测试背光
-    lcd_backlight_on();
-
-    // 清屏为黑色
-    lcd_clear(0x0000);  // 黑色
-
-    // 显示 smile 表情
-    // lcd_draw_bitmap(80, 80, 80, 80, img_smile);  
-
-    vTaskDelay(pdMS_TO_TICKS(1000));
-
-    // 绘制红色框
-    lcd_draw_rect(60, 60, 120, 120, 0xF800);  // 红色
-
-    // 测试背光关闭
-    lcd_backlight_off();
 }
