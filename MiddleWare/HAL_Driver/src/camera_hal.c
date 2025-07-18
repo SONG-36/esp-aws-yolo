@@ -5,6 +5,7 @@
 // #include "esp_psram.h"
 
 static const char* TAG = "camera_module";
+static uint32_t frame_count = 0;
 
 esp_err_t camera_hal_init(void)
 {
@@ -49,5 +50,17 @@ camera_fb_t* camera_hal_capture(void) {
         return NULL;
     }
 
+    frame_count++;
     return fb;
+}
+
+void camera_hal_release(camera_fb_t *frame) {
+    if (frame) {
+        esp_camera_fb_return(frame);
+    }
+}
+
+uint32_t camera_hal_get_frame_counter(void)
+{
+    return frame_count;
 }

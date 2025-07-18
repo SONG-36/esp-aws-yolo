@@ -7,6 +7,7 @@
 #include "camera_hal.h"
 // #include "esp_psram.h"
 #include "lcd_driver.h"
+#include "display_output.h"
 
 extern void register_all_tasks(void);
 
@@ -25,24 +26,31 @@ void app_main(void) {
     //     ESP_LOGE("MAIN", " Failed to capture image");
     // }
 
-    lcd_init();
+    // lcd_init();
 
-    // 准备颜色数组（RGB565）
+    // // 准备颜色数组（RGB565）
 
-    const uint16_t test_colors[] = {
-        0xF800, // Red
-        0x07E0, // Green
-        0x001F, // Blue
-        0xFFFF, // White
-        0x0000, // Black
-    };
+    // const uint16_t test_colors[] = {
+    //     0xF800, // Red
+    //     0x07E0, // Green
+    //     0x001F, // Blue
+    //     0xFFFF, // White
+    //     0x0000, // Black
+    // };
+
+    // while (1) {
+    //     for (int i = 0; i < sizeof(test_colors)/sizeof(test_colors[0]); i++) {
+    //         ESP_LOGI("MAIN", "Color: 0x%04X", test_colors[i]);
+    //         lcd_clear(test_colors[i]);
+    //         vTaskDelay(pdMS_TO_TICKS(1000));
+    //     }
+    // }
+
+    display_output_init();
 
     while (1) {
-        for (int i = 0; i < sizeof(test_colors)/sizeof(test_colors[0]); i++) {
-            ESP_LOGI("MAIN", "Color: 0x%04X", test_colors[i]);
-            lcd_clear(test_colors[i]);
-            vTaskDelay(pdMS_TO_TICKS(1000));
-        }
-    }
+        display_output_show_camera_image();
+        vTaskDelay(pdMS_TO_TICKS(100));  // 可调帧率
+    }    
 
 }

@@ -10,8 +10,8 @@
 static const char *TAG = "lcd_driver";
 
 // 面板和 IO 句柄
-static esp_lcd_panel_handle_t panel_handle = NULL;
-static esp_lcd_panel_io_handle_t io_handle = NULL;
+esp_lcd_panel_handle_t panel_handle = NULL;
+esp_lcd_panel_io_handle_t io_handle = NULL;
 
 void lcd_create_panel(void)
 {
