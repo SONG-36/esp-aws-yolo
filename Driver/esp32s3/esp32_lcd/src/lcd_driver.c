@@ -23,7 +23,7 @@ void lcd_create_panel(void)
         .miso_io_num = GPIO_NUM_NC,
         .quadwp_io_num = GPIO_NUM_NC,
         .quadhd_io_num = GPIO_NUM_NC,
-        .max_transfer_sz = LCD_H_RES * LCD_V_RES * 2 + 8,
+        .max_transfer_sz = LCD_H_RES * LCD_V_RES * 2,
     };
     ESP_ERROR_CHECK(spi_bus_initialize(LCD_SPI_HOST, &bus_config, SPI_DMA_CH_AUTO));
 
@@ -42,7 +42,7 @@ void lcd_create_panel(void)
         .reset_gpio_num = LCD_PIN_RST,
         .color_space = LCD_COLOR_SPACE,
         .bits_per_pixel = LCD_BITS_PER_PIXEL,
-
+        // .flags = ESP_LCD_PANEL_DEV_FLAG_MIRROR_Y, 
     };
     ESP_ERROR_CHECK(esp_lcd_new_panel_st7789(io_handle, &panel_config, &panel_handle));
 
@@ -56,13 +56,8 @@ void lcd_start_panel(void)
     ESP_ERROR_CHECK(esp_lcd_panel_reset(panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_init(panel_handle));
     ESP_ERROR_CHECK(esp_lcd_panel_invert_color(panel_handle, true));
-    ESP_ERROR_CHECK(esp_lcd_panel_mirror(panel_handle, false, false));
 
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
     ESP_ERROR_CHECK(esp_lcd_panel_disp_on_off(panel_handle, true));
-#else
-    ESP_ERROR_CHECK(esp_lcd_panel_disp_off(panel_handle, false));
-#endif
 
     // Backlight
     gpio_config_t io_conf = {

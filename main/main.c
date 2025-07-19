@@ -8,12 +8,14 @@
 // #include "esp_psram.h"
 #include "lcd_driver.h"
 #include "display_output.h"
+#include "esp32_spiffs.h"  // SPIFFS 挂载
 
 extern void register_all_tasks(void);
 
 void app_main(void) {
     register_all_tasks();               // App 注册任务表给 Core
     task_registry_init();              // Core 遍历任务表
+    spiffs_mount();             // 挂载 SPIFFS
     // camera_hal_init();             // 初始化摄像头  
 
     // camera_fb_t *fb = esp_camera_fb_get();
