@@ -69,7 +69,7 @@ void display_output_show_camera_image(void)
         lcd_draw_bitmap(0, 0, fb->width, fb->height, flipped_buf);
         free(flipped_buf);
     } else if (fb->format == PIXFORMAT_JPEG) {
-        ESP_LOGW(TAG, "📷 JPEG format received — skipping display");
+        ESP_LOGW(TAG, "JPEG format received — skipping display");
     }
 
     camera_hal_release(fb);
