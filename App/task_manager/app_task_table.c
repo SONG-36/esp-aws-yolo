@@ -1,9 +1,11 @@
 #include "task_entry.h"
 #include "task_manager.h"
-#include "helloworld_task.h"
+#include "display_task.h"
+#include "wifi_softap_task.h" 
 
 static const task_entry_t app_task_table[] = {
-    { "HelloTask", hello_task, 2048, 5 },
+    { "display_task", display_task, 4096, 5 },
+    { "hotspot_task", hotspot_task, 4096, 5 },
 };
 
 void register_all_tasks(void) {

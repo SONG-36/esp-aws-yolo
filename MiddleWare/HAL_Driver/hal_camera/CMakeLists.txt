@@ -1,9 +1,9 @@
-file(GLOB_RECURSE HAL_DRIVER_SRC
+file(GLOB_RECURSE HAL_CAMERA_SRC
     "src/*.c"
 )
 
 idf_component_register(
-    SRCS ${HAL_DRIVER_SRC}
+    SRCS ${HAL_CAMERA_SRC}
     INCLUDE_DIRS
         "include"
     REQUIRES

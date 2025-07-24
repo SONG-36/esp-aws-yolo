@@ -4,19 +4,29 @@
 #include "esp_log.h"
 #include "task_entry.h"
 #include "task_manager.h"
-#include "camera_hal.h"
-// #include "esp_psram.h"
-#include "lcd_driver.h"
-#include "display_output.h"
-#include "esp32_spiffs.h"  // SPIFFS 挂载
+// #include "esp32_spiffs.h"  // SPIFFS 挂载
+#include "nvs_flash.h"
 
 extern void register_all_tasks(void);
 
 void app_main(void) {
+    /* Initialize NVS. */
+    esp_err_t err = nvs_flash_init();
+    if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        err = nvs_flash_init();
+    }
+    
     register_all_tasks();               // App 注册任务表给 Core
     task_registry_init();              // Core 遍历任务表
-    spiffs_mount();             // 挂载 SPIFFS
-    // camera_hal_init();             // 初始化摄像头  
+    // spiffs_mount();             // 挂载 SPIFFS
+
+    // esp_err_t err = nvs_flash_init();
+    // if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+    //     ESP_ERROR_CHECK(nvs_flash_erase());
+    //     err = nvs_flash_init();
+    // }
+    // hal_camera_init();             // 初始化摄像头  
 
     // camera_fb_t *fb = esp_camera_fb_get();
     // if (fb) {
@@ -47,12 +57,7 @@ void app_main(void) {
     //         vTaskDelay(pdMS_TO_TICKS(1000));
     //     }
     // }
-
-    display_output_init();
-
-    while (1) {
-        display_output_show_camera_image();
-        vTaskDelay(pdMS_TO_TICKS(100));  // 可调帧率
-    }    
+    // wifi_config_start_softap();
+  
 
 }

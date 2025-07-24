@@ -17,7 +17,7 @@ void task_manager_register_table(const task_entry_t* table, size_t count) {
 // 遍历 internal_task_table 并创建任务
 void task_registry_init(void) {
     if (!internal_task_table || internal_task_count == 0) {
-        printf("❌ No task table registered!\n");
+        printf("No task table registered!\n");
         return;
     }
 

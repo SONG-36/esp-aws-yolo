@@ -7,7 +7,7 @@
 static const char* TAG = "camera_module";
 static uint32_t frame_count = 0;
 
-esp_err_t camera_hal_init(void)
+esp_err_t hal_camera_init(void)
 {
     // 1 初始化 I2C
     ESP_ERROR_CHECK(i2c_hal_init());  // 初始化 I2C
@@ -38,15 +38,15 @@ esp_err_t camera_hal_init(void)
     return ESP_OK;
 }
 
-esp_err_t camera_hal_deinit(void)
+esp_err_t hal_camera_deinit(void)
 {
     return esp_camera_deinit();
 }
 
-camera_fb_t* camera_hal_capture(void) {
+camera_fb_t* hal_camera_capture(void) {
     camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
-        printf("camera_hal_capture: Failed to get frame\n");
+        printf("hal_camera_capture: Failed to get frame\n");
         return NULL;
     }
 
@@ -54,13 +54,13 @@ camera_fb_t* camera_hal_capture(void) {
     return fb;
 }
 
-void camera_hal_release(camera_fb_t *frame) {
+void hal_camera_release(camera_fb_t *frame) {
     if (frame) {
         esp_camera_fb_return(frame);
     }
 }
 
-uint32_t camera_hal_get_frame_counter(void)
+uint32_t hal_camera_get_frame_counter(void)
 {
     return frame_count;
 }

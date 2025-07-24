@@ -9,5 +9,5 @@ idf_component_register(
     REQUIRES
         esp32-camera
         esp32_lcd
-        HAL_Driver
+        hal_camera
 )
